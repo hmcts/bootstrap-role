@@ -1,0 +1,49 @@
+---
+- name: Set the correct timezone.
+  file:
+    src: "/usr/share/zoneinfo/{{ ntp_timezone }}"
+    dest: /etc/localtime
+    state: link
+    force: yes
+  tags:
+    - ntp
+
+- name: Install NTP
+  yum: name=ntp state=installed
+  tags:
+    - ntp
+
+- name: Ensure chronyd is stopped and disabled, as they fight.
+  service:
+    name: chronyd
+    state: stopped
+    enabled: no
+  tags:
+    - ntp
+
+- name: Ensure NTP is running and enabled as configured.
+  service:
+    name: "{{ ntp_daemon }}"
+    state: started
+    enabled: yes
+  tags:
+    - ntp
+
+- name: Generate ntp.conf file
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify: restart ntp
+  when:
+    - ntp_manage_config
+    - (ansible_eth0 is defined and ansible_eth0.ipv4.address is defined and ansible_eth0.ipv4.address != '{{ reform_ntp_server_ip }}')
+  tags:
+    - ntp
+
+- name: Generate ntp.conf file for ntp server
+  template: src=ntp-server.conf.j2 dest=/etc/ntp.conf
+  notify: restart ntp
+  when:
+    - ansible_eth0 is defined
+    - ansible_eth0.ipv4.address is defined
+    - ansible_eth0.ipv4.address == '{{ reform_ntp_server_ip }}'
+  tags:
+    - ntp

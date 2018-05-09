@@ -1,0 +1,132 @@
+---
+- name: "Install all ldap packages for client"
+  with_items:
+    - openldap
+    - openldap-clients
+    - nss-pam-ldapd
+    - pam_ldap
+    - sssd
+    - nscd
+    - autofs
+    - rpcbind
+    - nfs-utils
+    - policycoreutils-python
+  yum:
+    name: "{{item}}"
+    state: present
+  tags:
+    - ldapclient
+    - ldapclient-install
+
+- name: Copy template sssd.conf
+  template:
+    src: sssd.conf
+    dest: /etc/sssd/sssd.conf
+    mode: 0600
+  tags:
+    - ldapclient
+    - ldapclient-install
+    - ldapclient-sssd
+
+- name: Add sudoers config to nsswitch.conf
+  lineinfile:
+    dest: '/etc/nsswitch.conf'
+    line: 'sudoers:    files sss'
+    #regexp: '^sudoers.*sss.*files$'
+  tags:
+    - ldapclient
+    - ldapclient-install
+
+- name: Add AuthorizedKeys config to ssh
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    line: "{{ item }}"
+  with_items:
+    - "AuthorizedKeysCommand /usr/bin/sss_ssh_authorizedkeys"
+    - "AuthorizedKeysCommandUser root"
+  tags:
+    - ldapclient
+    - ldapclient-install
+
+- name: Fix ssh ciphers
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    regexp: '^Ciphers '
+    line: "Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes192-cbc,3des-cbc,aes128-cbc,aes256-cbc"
+  tags:
+    - sshd
+
+- name: Add AllowGroups devops to ssh config
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    regexp: '^AllowGroups '
+    line: "AllowGroups devops"
+  when: ('demo' in inventory_hostname|lower or "reformmgmtdevjenkins" in inventory_hostname|lower or 'reformmgmtdevbuildagent' in inventory_hostname|lower )
+  tags:
+    - ldapclient
+    - ldapclient-install
+    - ldapclient-allowdevops
+
+- name: Add AllowGroups coredevops to ssh config
+  lineinfile:
+    dest: '/etc/ssh/sshd_config'
+    regexp: '^AllowGroups '
+    line: "AllowGroups coredevops"
+  when: ('prod' in inventory_hostname|lower) or ('mgmt' in inventory_hostname|lower and "reformmgmtdevjenkins" not in inventory_hostname|lower and "reformmgmtdevgatling01" not in inventory_hostname|lower and 'reformmgmtdevbuildagent' not in inventory_hostname|lower and 'reformmgmtdevbastion' not in inventory_hostname|lower)
+  tags:
+    - ldapclient
+    - ldapclient-install
+    - ldapclient-allowdevops
+
+- name: Add session config to pam.d
+  lineinfile:
+    dest: '/etc/pam.d/{{item}}'
+    line: 'session     optional      pam_mkhomedir.so umask=0077'
+  with_items:
+    - password-auth
+    - system-auth
+  tags:
+    - ldapclient
+    - ldapclient-install
+
+- name: Add search line to resolv.conf
+  lineinfile:
+    dest: '/etc/resolv.conf'
+    line: 'search reform.hmcts.net'
+  tags:
+    - ldapclient
+    - ldapclient-install
+
+- name: Ensure nscd is enabled
+  systemd: name=nscd state=restarted enabled=True
+  tags:
+    - ldapclient
+    - ldapclient-install
+
+- name: Ensure sssd is enabled
+  systemd: name=sssd state=restarted enabled=True
+  tags:
+    - ldapclient
+    - ldapclient-install
+    - ldapclient-sssd
+  when:
+    - ansible_system_vendor != "QEMU"
+
+- name: "Restart and enable sshd"
+  systemd: name=sshd state=restarted enabled=True
+  tags:
+    - ldapclient
+    - ldapclient-install
+    - sshd
+
+- name: "make mkhomedir permissive"
+  selinux_permissive:
+    name: oddjob_mkhomedir_t
+    permissive: true
+  tags:
+    - ldapclient
+    - ldapclient-install
+  when:
+    - ansible_selinux is defined
+    - ansible_selinux.status is defined
+    - ansible_selinux.status == "enabled"

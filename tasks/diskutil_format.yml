@@ -1,0 +1,45 @@
+---
+- name: Get disks
+  set_fact: disk_var="{{hostvars[inventory_hostname]["ansible_devices"].keys()|list}}"
+  tags:
+    - diskutil
+    - diskutil-format
+
+- name: Check if the disk is partitioned and also ignore sda
+  stat: path=/dev/{{item}}1
+  with_items: "{{disk_var}}"
+  when: (item != 'sda' and item != 'fd0' and item != 'sr0' and item != 'loop0' and item != 'loop1' and item != 'dm-0' and item != 'dm-1')
+  register: device_stat
+  tags:
+    - diskutil
+    - diskutil-format
+
+- name: Create GPT partition table
+  command: /sbin/parted -s /dev/{{item.item}} mklabel gpt
+  with_items: "{{device_stat.results}}"
+  when:
+    - not item | skipped
+    - item.stat.exists == false
+  tags:
+    - diskutil
+    - diskutil-format
+
+- name: Create GPT partition table
+  command: /sbin/parted -s /dev/{{item.item}} mkpart primary xfs 0% 100%
+  with_items: "{{device_stat.results}}"
+  when:
+    - not item | skipped
+    - item.stat.exists == false
+  tags:
+    - diskutil
+    - diskutil-format
+
+- name: Create filesystem XFS
+  command: /sbin/mkfs.xfs /dev/{{item.item}}1
+  with_items: "{{device_stat.results}}"
+  when:
+    - not item | skipped
+    - item.stat.exists == false
+  tags:
+    - diskutil
+    - diskutil-format

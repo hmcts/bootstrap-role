@@ -1,0 +1,7 @@
+# Enable SELinux
+- name: Set SElinux to Enforcing
+  selinux:
+    policy: targeted
+    state: enforcing
+  tags:
+    - selinux

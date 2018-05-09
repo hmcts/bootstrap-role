@@ -1,0 +1,28 @@
+---
+- name: Install waagent
+  yum:
+    name: WALinuxAgent
+    state: present
+    disablerepo: "*"
+    enablerepo: "base,updates,openlogic"
+
+- name: Enable Swap in config
+  lineinfile:
+    path: /etc/waagent.conf
+    regexp: '^ResourceDisk.EnableSwap='
+    line: 'ResourceDisk.EnableSwap=y'
+  notify: restart waagent
+
+
+- name: Set swap size in config
+  lineinfile:
+    path: /etc/waagent.conf
+    regexp: '^ResourceDisk.SwapSizeMB='
+    line: 'ResourceDisk.SwapSizeMB=8192'
+  notify: restart waagent
+
+- name: "Ensure agent is started"
+  service:
+    name: "waagent"
+    state: started
+    enabled: yes

@@ -1,0 +1,31 @@
+---
+
+- name: devops.filebeat
+  src: git@git.reform.hmcts.net:devops/filebeat-role.git
+  scm: git
+  version: master
+
+- name: clamav-role
+  src: https://github.com/hmcts/clamav-role
+  scm: git
+  version: master
+
+- name: cis
+  src: git@git.reform.hmcts.net:devops/cis-role.git
+  scm: git
+  version: master
+
+- name: zabbixagent-role
+  src: https://github.com/hmcts/zabbixagent-role
+  scm: git
+  version: master
+
+- name: devops.repos
+  src: git@git.reform.hmcts.net:devops/repos-role.git
+  scm: git
+  version: master
+
+- name: devops.ansible-management
+  src: git@github.com:hmcts/ansible-management.git
+  scm: git
+  version: master

@@ -1,0 +1,15 @@
+---
+
+- name: Setup Homefolders
+  file:
+    path: "/home/{{item}}"
+    state: directory
+    mode: 0755
+    owner: "{{item}}"
+    group: "{{item}}"
+  with_items: "{{bootstrap_system_accounts}}"
+  tags:
+    - ldapclient
+    - ldapclient-homefolders
+  when:
+    - ansible_system_vendor != "QEMU"

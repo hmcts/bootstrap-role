@@ -1,0 +1,12 @@
+---
+- hosts: all
+  pre_tasks:
+    - include: "tasks/resolver.yml"
+  environment:
+    http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
+  become: true
+  roles:
+    - { role: bootstrap-role, mode: internal }
+  vars:
+    passwordless_sudo_type: dynamic
+

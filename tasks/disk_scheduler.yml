@@ -1,0 +1,15 @@
+---
+
+- name: "Set disk schedulers at startup"
+  cron:
+    name: "Set disk schedulers at startup"
+    special_time: reboot
+    job: for i in /sys/block/sd*/queue/scheduler; do echo noop > $i; done
+  tags:
+    - disk_scheduler
+
+- name: "Manually set disk schedulers"
+  shell: for i in /sys/block/[vs]d*/queue/scheduler; do echo noop > $i; done
+  tags:
+    - disk_scheduler
+    - skip_ansible_lint

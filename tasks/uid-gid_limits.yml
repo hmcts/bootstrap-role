@@ -1,0 +1,64 @@
+---
+- name: Limit UID min
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: '^UID_MIN '
+    line: "UID_MIN      200"
+  tags:
+    - uid-gid
+
+- name: Limit UID max
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: '^UID_MAX '
+    line: "UID_MAX      999"
+  tags:
+    - uid-gid
+
+- name: Limit GID min
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: '^GID_MIN '
+    line: "GID_MIN      200"
+  tags:
+    - uid-gid
+
+- name: Limit GID max
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: '^GID_MAX '
+    line: "GID_MAX      999"
+  tags:
+    - uid-gid
+
+- name: Limit SYS_UID min
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: '^SYS_UID_MIN '
+    line: "SYS_UID_MIN   200"
+  tags:
+    - uid-gid
+
+- name: Limit SYS_UID max
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: '^SYS_UID_MAX '
+    line: "SYS_UID_MAX   999"
+  tags:
+    - uid-gid
+
+- name: Limit SYS_GID min
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: '^SYS_GID_MIN '
+    line: "SYS_GID_MIN  200"
+  tags:
+    - uid-gid
+
+- name: Limit SYS_GID max
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: '^SYS_GID_MAX '
+    line: "SYS_GID_MAX  999"
+  tags:
+    - uid-gid

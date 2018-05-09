@@ -1,0 +1,36 @@
+---
+- name: "Find nic config files"
+  find:
+    paths: "/etc/sysconfig/network-scripts"
+    patterns: "ifcfg-e*"
+  register: nic_config_files
+  tags:
+    - resolver
+
+- name: "Disable DHCP DNS settings"
+  lineinfile:
+    dest: "{{ item.path }}"
+    regexp: '^PEERDNS='
+    line: 'PEERDNS="no"'
+  with_items:
+    - "{{ nic_config_files.files }}"
+  tags:
+    - resolver
+
+- name: "Stop NetworkManager overwriting /etc/resolv.conf"
+  ini_file:
+    dest: "/etc/NetworkManager/NetworkManager.conf"
+    state: present
+    section: "main"
+    option: "dns"
+    value: "none"
+  failed_when: false
+  tags:
+    - resolver
+
+- name: Copy new resolv.conf
+  template:
+    src: templates/resolv.conf.j2
+    dest: "{{ resolver_conf_file }}"
+  tags:
+    - resolver

@@ -1,0 +1,46 @@
+---
+
+- hosts: all
+  tasks:
+    - name: Install openssl
+      yum:
+        name: openssl
+        state: present
+    - name: Add test certificate
+      command: "openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout /hmcts.key -out  /hmcts.crt -subj /CN=elktest.local -days 3650"
+      args:
+        creates: "/hmcts.*"
+    - name: slurp certificate
+      slurp:
+        src: /hmcts.crt
+      register: crtslurp
+    - name: slurp key
+      slurp:
+        src: /hmcts.key
+      register: keyslurp
+
+- hosts: all
+  tasks:
+    - name: Dictacting test environment
+      set_fact:
+        molecule: true
+
+    - name: Display value of molecule variable
+      debug:
+        var: molecule
+    - name: Display value of ansible_hostname
+      debug:
+        var: ansible_hostname
+    - name: Display value of ansible_system_vendor
+      debug:
+        var: ansible_system_vendor
+
+- hosts: all
+  gather_facts: true
+  vars:
+    filebeat_ssl_crt: "{{ crtslurp['content'] | b64decode }}"
+    filebeat_ssl_ca: "{{ crtslurp['content'] | b64decode }}"
+    filebeat_ssl_key: "{{ keyslurp['content'] | b64decode }}"
+    ldap_default_authtok_var: "FOO Value"
+  roles:
+    - { role: bootstrap-role, mode: internal }

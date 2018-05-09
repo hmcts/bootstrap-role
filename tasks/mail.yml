@@ -1,0 +1,46 @@
+---
+- name: Install postfix
+  yum: name=postfix state=installed
+  tags:
+    - mail
+
+- name: Configure Domain
+  lineinfile:
+    dest: /etc/postfix/main.cf
+    line: "mydomain = {{postfix_domain}}"
+  tags:
+    - mail
+
+- name: Configure Hostname
+  lineinfile:
+    dest: /etc/postfix/main.cf
+    line: "myhostname = {{ansible_hostname}}"
+  tags:
+    - mail
+
+- name: Configure the relayhost
+  lineinfile:
+    dest: /etc/postfix/main.cf
+    line: "relayhost = [{{postfix_relayhost}}.{{postfix_domain}}]"
+  when: inventory_hostname != 'reformMgmtMTA'
+  tags:
+    - mail
+
+- name: Using TLS
+  lineinfile:
+    dest: /etc/postfix/main.cf
+    line: "smtp_use_tls = yes"
+  tags:
+    - mail
+
+- name: Only IPv4
+  lineinfile:
+    dest: /etc/postfix/main.cf
+    line: "inet_protocols = ipv4"
+  tags:
+    - mail
+
+- name: Ensure postfix is running and enabled
+  service: name=postfix state=started enabled=yes
+  tags:
+    - mail

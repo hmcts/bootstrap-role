@@ -1,0 +1,17 @@
+galaxy_info:
+  author: HMCTS Reform programme
+  description: Used for bootstrapping servers
+  company: HMCTS
+
+  license: MIT
+
+  min_ansible_version: 1.2
+
+  galaxy_tags: []
+
+dependencies:
+  - { role: devops.repos }
+  - { role: devops.filebeat }
+  - { role: clamav-role }
+  - { role: zabbixagent-role }
+  - { role: cis }
