@@ -1,7 +1,7 @@
 ---
 
 - name: devops.filebeat
-  src: git@git.reform.hmcts.net:devops/filebeat-role.git
+  src: https://github.com/hmcts/filebeat-role.git
   scm: git
   version: master
 
@@ -11,7 +11,7 @@
   version: master
 
 - name: cis
-  src: git@git.reform.hmcts.net:devops/cis-role.git
+  src: https://github.com/hmcts/cis-role.git
   scm: git
   version: master
 
@@ -21,6 +21,6 @@
   version: master
 
 - name: devops.repos
-  src: git@git.reform.hmcts.net:devops/repos-role.git
+  src: https://github.com/hmcts/repos-role.git
   scm: git
   version: master
