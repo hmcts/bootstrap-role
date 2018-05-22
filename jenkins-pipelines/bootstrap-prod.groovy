@@ -23,6 +23,10 @@ node {
           dir('ansible-management') {
             git url: "https://github.com/hmcts/ansible-management.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
           }
+
+          dir('cis') {
+            git url: "https://github.com/hmcts/cis-role.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
+          }
         }
 
         stage('Do the needful') {
