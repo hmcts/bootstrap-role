@@ -21,7 +21,7 @@ node {
           }
 
           dir('ansible-management') {
-            git url: "https://github.com/hmcts/ansible-management.git", branch: "master"
+            git url: "https://github.com/hmcts/ansible-management", branch: "master"
           }
         }
 
