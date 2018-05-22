@@ -1,5 +1,8 @@
 ---
-- include_vars: "ansible-management/group_vars/all.yml"
+- name: Need to include all vars from AM
+  include_vars:
+    dir: "ansible-management/group_vars"
+
 - include: outboundproxy.yml
 - include: waagent_swap.yml
 - include: diskutil_format.yml
