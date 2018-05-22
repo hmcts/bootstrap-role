@@ -1,6 +1,7 @@
 ---
 - hosts: all
   pre_tasks:
+    - include_vars: "../ansible-management/groups_vars/all.yml"
     - include: "tasks/resolver.yml"
   environment:
     http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
