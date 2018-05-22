@@ -44,11 +44,6 @@ node {
 
           ansible-galaxy install -r requirements.yml --force --roles-path=roles/
 
-          ls
-
-          cp -r ansible-management roles/
-          mv cis roles/
-
           chmod +x ansible-management/inventory/azure_rm.py
           cat << EOF > ansible.cfg
 [defaults]
