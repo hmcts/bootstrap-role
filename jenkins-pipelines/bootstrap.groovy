@@ -46,7 +46,7 @@ node {
 
           ls
 
-          mv ansible-management roles/
+          cp -r ansible-management roles/
           mv cis roles/
 
           chmod +x ansible-management/inventory/azure_rm.py
