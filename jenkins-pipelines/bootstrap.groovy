@@ -23,7 +23,6 @@ node {
           dir('ansible-management') {
             git url: "https://github.com/hmcts/ansible-management.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
           }
-          
           dir('cis') {
             git url: "https://github.com/hmcts/cis-role.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
           }
@@ -37,7 +36,6 @@ node {
           sh '''
           find
           env
-          
           if [ "$test_mode" == "true" ]; then
             echo "In test mode!"
             python ansible-management/inventory/azure_rm.py | python -m json.tool
@@ -45,9 +43,13 @@ node {
           fi
 
           ansible-galaxy install -r requirements.yml --force --roles-path=roles/
-          
+
+          ls
+
+          mv ansible-management roles/
+          mv cis roles/
+
           chmod +x ansible-management/inventory/azure_rm.py
-          
           cat << EOF > ansible.cfg
 [defaults]
 remote_port = \$SSH_PORT

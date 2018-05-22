@@ -1,12 +1,9 @@
 ---
 - hosts: all
   pre_tasks:
-    - include_vars: "ansible-management/group_vars/all.yml"
     - include: "tasks/resolver.yml"
   environment:
     http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
   become: true
-  vars_files:
-    - "ansible-management/group_vars/all.yml"
   roles:
     - { role: bootstrap-role, mode: internal }
