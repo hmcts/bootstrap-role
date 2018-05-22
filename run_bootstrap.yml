@@ -6,7 +6,7 @@
   environment:
     http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
   become: true
-  include_vars:
-    dir: "ansible-management/group_vars"
+  vars_files:
+    - "ansible-management/group_vars/all.yml"
   roles:
     - { role: bootstrap-role, mode: internal }
