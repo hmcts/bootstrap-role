@@ -9,19 +9,19 @@ if (env.HOSTNAME_PARAM == "") {
 }
 
 node {
-  ws('bootstrap') { // This must be the name of the role otherwise ansible won't find the role
+  ws("$JOB_NAME") { // This must be the name of the role otherwise ansible won't find the role
     try {
       wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
         stage('Checkout') {
           deleteDir()
-          git url: "https://github.com/hmcts/bootstrap-role.git", branch: "master"
+          git url: "https://github.com/hmcts/ansible-management.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
 
-          dir('bootstrap-role') {
+          dir('roles/bootstrap-role') {
             git url: "https://github.com/hmcts/bootstrap-role.git", branch: "master"
           }
 
-          dir('ansible-management') {
-            git url: "https://github.com/hmcts/ansible-management.git", branch: "master"
+          dir('roles/cis') {
+            git url: "https://github.com/hmcts/cis-role.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
           }
         }
 
@@ -31,32 +31,40 @@ node {
           // env.AZURE_TAGS = "product:mgmt"
           // ,role:ldap"
           sh '''
+          pwd
           find
           env
-          
+
           if [ "$test_mode" == "true" ]; then
             echo "In test mode!"
-            python ansible-management/inventory/azure_rm.py | python -m json.tool
+            python inventory/azure_rm.py | python -m json.tool
             exit
           fi
 
-          ansible-galaxy install -r requirements.yml --force --roles-path=roles/
-          
-          chmod +x ansible-management/inventory/azure_rm.py
-          
+          ansible-galaxy install -r roles/bootstrap-role/requirements.yml --force --roles-path=roles/
+
+          chmod +x inventory/azure_rm.py
+
           cat << EOF > ansible.cfg
 [defaults]
 remote_port = \$SSH_PORT
 remote_user = \$SSH_USER
 private_key_file = \$SSH_KEY_FILE
+roles_path = roles
 EOF
 
+          # File is searched in wrong location because task is directly included from pre_tasks
+          mkdir -p roles/bootstrap-role/tasks/templates/
+          cp -a ./roles/bootstrap-role/templates/resolv.conf.j2 ./roles/bootstrap-role/tasks/templates/resolv.conf.j2
+
+          # Execute ansible-playbook
+          ln -s roles/bootstrap-role/run_bootstrap.yml run_bootstrap.yml
           if [ "$HOSTNAME_PARAM" == "" ]; then
-            ansible-playbook -i ansible-management/inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml
+            ansible-playbook -i inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml
           else
             ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
           fi
-          
+
         '''
         }
 
@@ -75,4 +83,3 @@ EOF
     }
   }
 }
-
