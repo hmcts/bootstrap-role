@@ -1,7 +1,8 @@
 ---
 - hosts: all
   pre_tasks:
-    - include: "roles/bootstrap-role/tasks/resolver.yml"
+    - include: "tasks/resolver.yml"
+      static: yes
   environment:
     http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
   become: true
