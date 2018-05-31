@@ -9,7 +9,7 @@
   vars:
     passwordless_sudo_type: dynamic
   roles:
-#    - { role: bootstrap-role, mode: internal }
+    - { role: bootstrap-role, mode: internal }
 # Below is a workaround for ansible-galaxy not readily supporting private repos
 # which cis causes problems with.
     - { role: devops.filebeat, mode: internal }
