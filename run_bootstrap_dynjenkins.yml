@@ -8,3 +8,5 @@
   become: true
   vars:
     passwordless_sudo_type: dynamic
+  roles:
+    - { role: bootstrap-role, mode: internal }
