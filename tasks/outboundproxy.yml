@@ -37,5 +37,4 @@
     path: /etc/yum.conf
     state: present
 
-
 - meta: flush_handlers
