@@ -3,6 +3,8 @@
   pre_tasks:
     - include: "tasks/resolver.yml"
       static: yes
+    - include: "tasks/outboundproxy.yml"
+      static: yes
   environment:
     http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
   become: true
