@@ -30,4 +30,11 @@
   tags:
     - outboundproxy
 
+- name: Set up proxy config for yum.
+  lineinfile:
+    insertafter: "[main]"
+    line: "proxy=http://{{ proxy.host }}:{{ proxy.port }}"
+    path: /etc/yum.conf
+    state: present
+
 - meta: flush_handlers
