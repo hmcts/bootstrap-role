@@ -45,25 +45,49 @@ node {
 
           chmod +x inventory/azure_rm.py
 
-          cat << EOF > ansible.cfg
-[defaults]
-remote_port = \$SSH_PORT
-remote_user = \$SSH_USER
-private_key_file = \$SSH_KEY_FILE
-roles_path = roles
-EOF
+if [ "$windows" != true ]; then
+
+  cat << EOF > ansible.cfg
+  [defaults]
+  remote_port = \$SSH_PORT
+  remote_user = \$SSH_USER
+  private_key_file = \$SSH_KEY_FILE
+  roles_path = roles
+  EOF
+
+else
+  cat << EOF > ansible.cfg
+  [defaults]
+  ansible_user: ${winuser}
+  ansible_password: ${winpassword}
+  ansible_port: 5986
+  ansible_connection: winrm
+  ansible_winrm_server_cert_validation: ignore
+  EOF
+fi
 
           # File is searched in wrong location because task is directly included from pre_tasks
           mkdir -p roles/bootstrap-role/tasks/templates/
           cp -a ./roles/bootstrap-role/templates/resolv.conf.j2 ./roles/bootstrap-role/tasks/templates/resolv.conf.j2
 
-          # Execute ansible-playbook
-          ln -s roles/bootstrap-role/run_bootstrap.yml run_bootstrap.yml
-          if [ "$HOSTNAME_PARAM" == "" ]; then
-            ansible-playbook -i inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml
-          else
-            ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
-          fi
+          if [ "$windows" == true ]; then
+            echo "windows mode!"
+            if [ "$HOSTNAME_PARAM" == "" ]; then
+              ansible-playbook -i inventory/azure_rm.py --tags "$ANSIBLE_TAGS" windows_bootstrap.yml
+            else
+              ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" windows_bootstrap.yml
+            fi
+
+          else {
+
+            # Execute ansible-playbook
+            ln -s roles/bootstrap-role/run_bootstrap.yml run_bootstrap.yml
+            if [ "$HOSTNAME_PARAM" == "" ]; then
+              ansible-playbook -i inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml
+            else
+              ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
+            fi
+        }
 
         '''
         }
