@@ -48,21 +48,21 @@ node {
           if [ "$windows" != true ]; then
 
             cat << EOF > ansible.cfg
-            [defaults]
-            remote_port = \$SSH_PORT
-            remote_user = \$SSH_USER
-            private_key_file = \$SSH_KEY_FILE
-            roles_path = roles
+                [defaults]
+                remote_port = \$SSH_PORT
+                remote_user = \$SSH_USER
+                private_key_file = \$SSH_KEY_FILE
+                roles_path = roles
             EOF
 
           else
             cat << EOF > ansible.cfg
-            [defaults]
-            ansible_user: ${winuser}
-            ansible_password: ${winpassword}
-            ansible_port: 5986
-            ansible_connection: winrm
-            ansible_winrm_server_cert_validation: ignore
+                [defaults]
+                ansible_user: ${winuser}
+                ansible_password: ${winpassword}
+                ansible_port: 5986
+                ansible_connection: winrm
+                ansible_winrm_server_cert_validation: ignore
             EOF
           fi
 
@@ -78,7 +78,7 @@ node {
               ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" windows_bootstrap.yml
             fi
 
-          else {
+          else
 
             # Execute ansible-playbook
             ln -s roles/bootstrap-role/run_bootstrap.yml run_bootstrap.yml
