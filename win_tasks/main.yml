@@ -1,2 +1,3 @@
 ---
-- include: win_docker_host.yml
+- include_tasks: win_docker_host.yml
+- name: Win Docker Host
