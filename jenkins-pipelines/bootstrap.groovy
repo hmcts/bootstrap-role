@@ -45,26 +45,26 @@ node {
 
           chmod +x inventory/azure_rm.py
 
-if [ "$windows" != true ]; then
+          if [ "$windows" != true ]; then
 
-  cat << EOF > ansible.cfg
-  [defaults]
-  remote_port = \$SSH_PORT
-  remote_user = \$SSH_USER
-  private_key_file = \$SSH_KEY_FILE
-  roles_path = roles
-  EOF
+            cat << EOF > ansible.cfg
+            [defaults]
+            remote_port = \$SSH_PORT
+            remote_user = \$SSH_USER
+            private_key_file = \$SSH_KEY_FILE
+            roles_path = roles
+            EOF
 
-else
-  cat << EOF > ansible.cfg
-  [defaults]
-  ansible_user: ${winuser}
-  ansible_password: ${winpassword}
-  ansible_port: 5986
-  ansible_connection: winrm
-  ansible_winrm_server_cert_validation: ignore
-  EOF
-fi
+          else
+            cat << EOF > ansible.cfg
+            [defaults]
+            ansible_user: ${winuser}
+            ansible_password: ${winpassword}
+            ansible_port: 5986
+            ansible_connection: winrm
+            ansible_winrm_server_cert_validation: ignore
+            EOF
+          fi
 
           # File is searched in wrong location because task is directly included from pre_tasks
           mkdir -p roles/bootstrap-role/tasks/templates/
