@@ -1,2 +1,3 @@
 - hosts: all
   - include: "roles/bootstrap-role/win-tasks/main.yml"
+  
