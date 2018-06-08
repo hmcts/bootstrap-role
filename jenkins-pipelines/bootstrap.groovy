@@ -113,7 +113,7 @@ EOF
          echo cleanup
         '''
       }
-      //deleteDir()
+      deleteDir()
     }
   }
 }
