@@ -1,0 +1,12 @@
+---
+- include: outboundproxy.yml
+- include: waagent_swap.yml
+- include: diskutil_format.yml
+- include: mail.yml
+- include: ntp.yml
+- include: ldap_install.yml
+- include: ldap_homefolders.yml
+- include: uid-gid_limits.yml
+- include: selinux.yml
+- include: passwordless_sudo.yml
+- include: disk_scheduler.yml

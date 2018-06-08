@@ -1,7 +1,12 @@
 ---
 - hosts: all
   pre_tasks:
-    - include: "roles/bootstrap-role/tasks/resolver.yml"
+    - name: Show OS
+      debug:
+        var: ansible_os_name
+    - name: Setup DNS early in the process
+      include_tasks: "roles/bootstrap-role/tasks/resolver.yml"
+      when: ansible_os_name == 'linux'
   environment:
     http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
     https_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
