@@ -74,6 +74,7 @@ ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
 EOF
           fi
+          cat ansible.cfg
 
           # File is searched in wrong location because task is directly included from pre_tasks
           mkdir -p roles/bootstrap-role/tasks/templates/
