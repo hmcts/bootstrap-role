@@ -82,6 +82,7 @@ EOF
           if [ "$windows" == "true" ]; then
             echo "windows mode!"
             if [ "$HOSTNAME_PARAM" == "" ]; then
+            ln -s roles/bootstrap-role/windows_bootstrap.yml windows_bootstrap.yml
               ansible-playbook -i inventory/azure_rm.py --tags "$ANSIBLE_TAGS" windows_bootstrap.yml
             else
               ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" windows_bootstrap.yml
