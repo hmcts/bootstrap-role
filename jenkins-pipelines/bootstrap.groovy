@@ -96,7 +96,6 @@ EOF
             else
               ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
             fi
-        }
 
         '''
         }
