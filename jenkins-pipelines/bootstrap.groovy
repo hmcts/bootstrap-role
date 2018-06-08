@@ -8,6 +8,15 @@ if (env.HOSTNAME_PARAM == "") {
     currentBuild.description = "$HOSTNAME_PARAM - $AZURE_PROFILE"
 }
 
+secrets = [
+      [$class: 'VaultSecret', path: 'secret/devops/vms_windows_admin_username', secretValues:
+          [[$class: 'VaultSecretValue', envVar: 'TF_VAR_vms_windows_admin_username', vaultKey: 'value']]
+      ],
+      [$class: 'VaultSecret', path: 'secret/devops/vms_windows_admin_password', secretValues:
+          [[$class: 'VaultSecretValue', envVar: 'TF_VAR_vms_windows_admin_password', vaultKey: 'value']]
+      ]
+  ]
+
 node {
   ws("$JOB_NAME") { // This must be the name of the role otherwise ansible won't find the role
     try {
@@ -58,8 +67,8 @@ EOF
           else
             cat << EOF > ansible.cfg
 [defaults]
-ansible_user: ${winuser}
-ansible_password: ${winpassword}
+ansible_user: ${vms_windows_admin_username}
+ansible_password: ${vms_windows_admin_password}
 ansible_port: 5986
 ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
