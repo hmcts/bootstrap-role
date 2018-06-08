@@ -1,3 +1,0 @@
----
-- name: Win Docker Host
-  include_tasks: win_docker_host.yml

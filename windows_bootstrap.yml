@@ -1,3 +1,0 @@
-- hosts: all
-- name: Win Tasks
-  include_tasks: "roles/bootstrap-role/win-tasks/main.yml"

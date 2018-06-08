@@ -79,17 +79,6 @@ EOF
           mkdir -p roles/bootstrap-role/tasks/templates/
           cp -a ./roles/bootstrap-role/templates/resolv.conf.j2 ./roles/bootstrap-role/tasks/templates/resolv.conf.j2
 
-          if [ "$windows" == "true" ]; then
-            echo "windows mode!"
-            if [ "$HOSTNAME_PARAM" == "" ]; then
-            ln -s roles/bootstrap-role/windows_bootstrap.yml windows_bootstrap.yml
-              ansible-playbook -i inventory/azure_rm.py --tags "$ANSIBLE_TAGS" windows_bootstrap.yml
-            else
-              ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" windows_bootstrap.yml
-            fi
-
-          else
-
             # Execute ansible-playbook
             ln -s roles/bootstrap-role/run_bootstrap.yml run_bootstrap.yml
             if [ "$HOSTNAME_PARAM" == "" ]; then
@@ -97,7 +86,6 @@ EOF
             else
               ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
             fi
-          fi
 
         '''
         }
