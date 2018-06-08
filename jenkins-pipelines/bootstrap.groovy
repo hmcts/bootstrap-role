@@ -55,7 +55,7 @@ node {
           chmod +x inventory/azure_rm.py
 
           if [ "$windows" != "true" ]; then
-
+            echo "DEBUG CASE 1"
             cat << EOF > ansible.cfg
 [defaults]
 remote_port = \$SSH_PORT
@@ -65,6 +65,7 @@ roles_path = roles
 EOF
 
           else
+            echo "DEBUG CASE 2"
             cat << EOF > ansible.cfg
 [defaults]
 ansible_user: ${vms_windows_admin_username}
@@ -74,6 +75,8 @@ ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
 EOF
           fi
+
+          ls -lh ansible.cfg
           cat ansible.cfg
 
           # File is searched in wrong location because task is directly included from pre_tasks
