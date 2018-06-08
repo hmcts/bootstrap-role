@@ -54,7 +54,7 @@ node {
 
           chmod +x inventory/azure_rm.py
 
-          if [ "$windows" != true ]; then
+          if [ "$windows" != "true" ]; then
 
             cat << EOF > ansible.cfg
 [defaults]
@@ -79,7 +79,7 @@ EOF
           mkdir -p roles/bootstrap-role/tasks/templates/
           cp -a ./roles/bootstrap-role/templates/resolv.conf.j2 ./roles/bootstrap-role/tasks/templates/resolv.conf.j2
 
-          if [ "$windows" == true ]; then
+          if [ "$windows" == "true" ]; then
             echo "windows mode!"
             if [ "$HOSTNAME_PARAM" == "" ]; then
               ansible-playbook -i inventory/azure_rm.py --tags "$ANSIBLE_TAGS" windows_bootstrap.yml
