@@ -1,0 +1,23 @@
+---
+- name: Install Windows Server 2016 Containers feature
+  win_feature:
+    name: Containers # required. Names of roles or features to install as a single feature or a comma-separated list of features.
+    include_sub_features: yes # not required. Adds all subfeatures of the specified feature.
+    state: present # not required. choices: present;absent. State of the features or roles on the system.
+
+- name: Removed unused Windows features
+  win_feature:
+    name: 
+    - FS-SMB1
+    state: absent
+
+- name: Install docker engine
+  win_shell: |   
+   If (!((Get-Service Docker -ErrorAction SilentlyContinue).Status -eq "running")) {
+    Write-Output "Installing Docker engine"
+    Install-Module -Name DockerMsftProvider -Repository PSGallery -Force -Verbose
+    Install-Package Docker -ProviderName DockerMsftProvider -Force -verbose
+    Write-Verbose "Restarting machine" -Verbose
+    Restart-Computer -Force
+    }
+    else {Write-Output "Docker engine installed " -Verbose}
