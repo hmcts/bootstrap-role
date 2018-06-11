@@ -68,8 +68,8 @@ EOF
             echo "DEBUG CASE 2"
             cat << EOF > ansible.cfg
 [defaults]
-ansible_user: ${vms_windows_admin_username}
-ansible_password: ${vms_windows_admin_password}
+ansible_user: xxx
+ansible_password: xxx
 ansible_port: 5986
 ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
@@ -78,6 +78,7 @@ EOF
 
           ls -lh ansible.cfg
           cat ansible.cfg
+          ansible-config view
 
           # File is searched in wrong location because task is directly included from pre_tasks
           mkdir -p roles/bootstrap-role/tasks/templates/
