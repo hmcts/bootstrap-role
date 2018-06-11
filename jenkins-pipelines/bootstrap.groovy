@@ -68,11 +68,11 @@ EOF
             echo "DEBUG CASE 2"
             cat << EOF > ansible.cfg
 [defaults]
-ansible_user: xxx
-ansible_password: xxx
-ansible_port: 5986
-ansible_connection: winrm
-ansible_winrm_server_cert_validation: ignore
+ansible_user = xxx
+ansible_password = xxx
+ansible_port = 5986
+ansible_connection = winrm
+ansible_winrm_server_cert_validation = ignore
 EOF
           fi
 
