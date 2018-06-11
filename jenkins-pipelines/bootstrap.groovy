@@ -23,7 +23,7 @@ node {
       wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
         stage('Checkout') {
           deleteDir()
-          git url: "https://github.com/hmcts/ansible-management.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
+          git url: "https://github.com/hmcts/ansible-management.git", branch: "update-inventory", credentialsId: "jenkins-public-github-api-token"
 
           dir('roles/bootstrap-role') {
             git url: "https://github.com/hmcts/bootstrap-role.git", branch: "winchg"
@@ -53,6 +53,12 @@ node {
           ansible-galaxy install -r roles/bootstrap-role/requirements.yml --force --roles-path=roles/
 
           chmod +x inventory/azure_rm.py
+
+          echo '==========================='
+          echo '==========================='
+          echo '==========================='
+          echo '==========================='
+          echo '==========================='
 
           if [ "$windows" != "true" ]; then
             echo "DEBUG CASE 1"
