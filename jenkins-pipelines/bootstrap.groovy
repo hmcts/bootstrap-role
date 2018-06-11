@@ -89,7 +89,8 @@ EOF
             if [ "$HOSTNAME_PARAM" == "" ]; then
               ansible-playbook -vvv -i  inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml 
             else
-              ansible-playbook -vvv -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
+              ansible-config view 
+              ansible-playbook ~/.ansible.cfg -vvv -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
             fi
 
         '''
