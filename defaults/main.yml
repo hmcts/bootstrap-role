@@ -38,10 +38,3 @@ proxy:
   no_proxy: "localhost,127.0.0.0/8,127.0.0.1,127.0.0.1*,local.home,reform.hmcts.net,*.reform.hmcts.net,internal,*.internal"
 
 passwordless_sudo_type: 'static'
-
-# WinRM config
-ansible_user: xxx
-ansible_password: xxx
-ansible_port: 5986
-ansible_connection: winrm
-ansible_winrm_server_cert_validation: ignore
