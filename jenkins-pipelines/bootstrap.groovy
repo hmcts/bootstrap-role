@@ -85,8 +85,7 @@ EOF
             if [ "$HOSTNAME_PARAM" == "" ]; then
 
               ansible-config view   
-              python inventory/azure_rm.py | python -m json.tool
-              ansible-playbook -vvv -e ansible_host=172.16.4.27 -i  inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml 
+              ansible-playbook -vvv -i  inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml 
             else
               ansible-playbook -vvv -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
             fi
