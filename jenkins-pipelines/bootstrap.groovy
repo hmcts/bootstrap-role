@@ -84,7 +84,7 @@ EOF
             ln -s roles/bootstrap-role/run_bootstrap.yml run_bootstrap.yml
             if [ "$HOSTNAME_PARAM" == "" ]; then
               ansible-config view   
-              https_proxy="";ansible-playbook -vvv -i  inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml 
+              ansible-playbook -vvv -i  inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml 
             else
               ansible-playbook -vvv -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
             fi
