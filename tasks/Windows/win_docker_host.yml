@@ -14,6 +14,12 @@
 - name: Install docker engine
   win_shell: |   
    If (!((Get-Service Docker -ErrorAction SilentlyContinue).Status -eq "running")) {
+    $proxyString = "http://reformMgmtProxyOut.reform.hmcts.net:8080"
+    $proxyUri = new-object System.Uri($proxyString)
+    [System.Net.WebRequest]::DefaultWebProxy =
+    new-object System.Net.WebProxy ($proxyUri, $true)
+
+    set proxy proxy-server="http=http://reformMgmtProxyOut.reform.hmcts.net:8080;https=http://reformMgmtProxyOut.reform.hmcts.net:8080"
     Write-Output "Installing Docker engine"
     Install-PackageProvider -Name NuGet -Force
     Install-Module -Name DockerMsftProvider -Repository PSGallery -Force -Verbose
