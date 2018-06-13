@@ -40,9 +40,9 @@ node {
           // env.AZURE_TAGS = "product:mgmt"
           // ,role:ldap"
           sh '''
-          pwd
-          find
-          env
+          # pwd
+          # find
+          # env
 
           if [ "$test_mode" == "true" ]; then
             echo "In test mode!"
@@ -72,9 +72,9 @@ become = False
 EOF
           fi
 
-          ls -lh ansible.cfg
-          cat ansible.cfg
-          ansible-config view
+         # ls -lh ansible.cfg
+         # cat ansible.cfg
+         # ansible-config view
 
           # File is searched in wrong location because task is directly included from pre_tasks
           mkdir -p roles/bootstrap-role/tasks/templates/
