@@ -10,9 +10,9 @@ galaxy_info:
   galaxy_tags: []
 
 dependencies:
+ when: ansible_os_family != "windows"
   - { role: devops.repos }
   - { role: devops.filebeat }
   - { role: clamav-role }
   - { role: zabbixagent-role }
   - { role: cis }
-  when: ansible_os_family != "windows"
