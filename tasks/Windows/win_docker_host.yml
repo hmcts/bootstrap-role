@@ -15,6 +15,7 @@
   win_shell: |   
    If (!((Get-Service Docker -ErrorAction SilentlyContinue).Status -eq "running")) {
     Write-Output "Installing Docker engine"
+    Install-PackageProvider -Name NuGet -Force
     Install-Module -Name DockerMsftProvider -Repository PSGallery -Force -Verbose
     Install-Package Docker -ProviderName DockerMsftProvider -Force -verbose
     Write-Verbose "Restarting machine" -Verbose
