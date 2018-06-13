@@ -8,11 +8,10 @@ galaxy_info:
   min_ansible_version: 1.2
 
   galaxy_tags: []
-  when: ansible_os_family != "windows"
 
 dependencies:
-  - { role: devops.repos }
-  - { role: devops.filebeat }
-  - { role: clamav-role }
-  - { role: zabbixagent-role }
-  - { role: cis }
+  - { role: devops.repos, when: ansible_os_family != "windows" }
+  - { role: devops.filebeat, when: ansible_os_family != "windows" }
+  - { role: clamav-role, when: ansible_os_family != "windows" }
+  - { role: zabbixagent-role, when: ansible_os_family != "windows" }
+  - { role: cis, when: ansible_os_family != "windows" }
