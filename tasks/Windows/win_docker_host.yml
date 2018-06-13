@@ -11,6 +11,20 @@
     - FS-SMB1
     state: absent
 
+- name: Set Proxy machine level
+  win_environment:
+    state: present
+    name: HTTP_PROXY
+    value: http://reformMgmtProxyOut.reform.hmcts.net:8080
+    level: machine
+
+- name: Set Proxy machine level
+  win_environment:
+    state: present
+    name: HTTPS_PROXY
+    value: http://reformMgmtProxyOut.reform.hmcts.net:8080
+    level: machine
+
 - name: Install docker engine
   win_shell: |   
    If (!((Get-Service Docker -ErrorAction SilentlyContinue).Status -eq "running")) {
