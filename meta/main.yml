@@ -15,5 +15,4 @@ dependencies:
   - { role: clamav-role }
   - { role: zabbixagent-role }
   - { role: cis }
-  when:
-  - ansible_os_family != "windows"
+  - when: ansible_os_family != "windows"
