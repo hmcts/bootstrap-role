@@ -11,14 +11,14 @@
     - FS-SMB1
     state: absent
 
-- name: Set Proxy machine level
+- name: Set Proxy machine level. Required by Docker host
   win_environment:
     state: present
     name: HTTP_PROXY
     value: http://reformMgmtProxyOut.reform.hmcts.net:8080
     level: machine
 
-- name: Set Proxy machine level
+- name: Set Proxy machine level. Required by Docker host
   win_environment:
     state: present
     name: HTTPS_PROXY
@@ -28,6 +28,7 @@
 - name: Install docker engine
   win_shell: |   
    If (!((Get-Service Docker -ErrorAction SilentlyContinue).Status -eq "running")) {
+    
     $proxyString = "http://reformMgmtProxyOut.reform.hmcts.net:8080"
     $proxyUri = new-object System.Uri($proxyString)
     [System.Net.WebRequest]::DefaultWebProxy =
@@ -35,6 +36,7 @@
 
     set proxy proxy-server="http=http://reformMgmtProxyOut.reform.hmcts.net:8080;https=http://reformMgmtProxyOut.reform.hmcts.net:8080"
     Write-Output "Installing Docker engine"
+    
     Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Verbose -Proxy http://reformMgmtProxyOut.reform.hmcts.net:8080
     Install-Module -Name DockerMsftProvider -Repository PSGallery -Force -Verbose
     Install-Package Docker -ProviderName DockerMsftProvider -Force -verbose
