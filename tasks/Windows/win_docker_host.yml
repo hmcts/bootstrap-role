@@ -1,9 +1,9 @@
 ---
 - name: Install Windows Server 2016 Containers feature
   win_feature:
-    name: Containers # required. Names of roles or features to install as a single feature or a comma-separated list of features.
-    include_sub_features: yes # not required. Adds all subfeatures of the specified feature.
-    state: present # not required. choices: present;absent. State of the features or roles on the system.
+    name: Containers
+    include_sub_features: yes
+    state: present
 
 - name: Removed unused Windows features
   win_feature:
@@ -11,14 +11,14 @@
     - FS-SMB1
     state: absent
 
-- name: Set Proxy machine level. Required by Docker host
+- name: Set proxy machine level. Required by Docker host
   win_environment:
     state: present
     name: HTTP_PROXY
     value: http://reformMgmtProxyOut.reform.hmcts.net:8080
     level: machine
 
-- name: Set Proxy machine level. Required by Docker host
+- name: Set proxy machine level. Required by Docker host
   win_environment:
     state: present
     name: HTTPS_PROXY
