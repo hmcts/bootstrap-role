@@ -21,7 +21,7 @@
 
     set proxy proxy-server="http=http://reformMgmtProxyOut.reform.hmcts.net:8080;https=http://reformMgmtProxyOut.reform.hmcts.net:8080"
     Write-Output "Installing Docker engine"
-    Install-PackageProvider -Name NuGet -Force
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Verbose -Proxy http://reformMgmtProxyOut.reform.hmcts.net:8080
     Install-Module -Name DockerMsftProvider -Repository PSGallery -Force -Verbose
     Install-Package Docker -ProviderName DockerMsftProvider -Force -verbose
     Write-Verbose "Restarting machine" -Verbose
