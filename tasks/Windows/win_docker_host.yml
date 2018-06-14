@@ -60,6 +60,6 @@
         )
     }
 
-    $body |ConvertTo-Json| Out-File .\daemon.json
+    $body |ConvertTo-Json| Out-File .\daemon.json -Encoding utf8
 
     Get-service docker | Restart-Service -verbose
