@@ -46,7 +46,7 @@
     else {Write-Output "Docker engine installed " -Verbose}
 
 
-- name: Install docker engine
+- name: Configure docker engine
   win_shell: |  
     New-Item -Type File -Name daemon.json -Path C:\ProgramData\docker\config -Force
 
