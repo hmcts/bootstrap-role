@@ -8,15 +8,6 @@ if (env.HOSTNAME_PARAM == "") {
     currentBuild.description = "$HOSTNAME_PARAM - $AZURE_PROFILE"
 }
 
-secrets = [
-      [$class: 'VaultSecret', path: 'secret/devops/vms_windows_admin_username', secretValues:
-          [[$class: 'VaultSecretValue', envVar: 'TF_VAR_vms_windows_admin_username', vaultKey: 'value']]
-      ],
-      [$class: 'VaultSecret', path: 'secret/devops/vms_windows_admin_password', secretValues:
-          [[$class: 'VaultSecretValue', envVar: 'TF_VAR_vms_windows_admin_password', vaultKey: 'value']]
-      ]
-  ]
-
 node {
   ws("$JOB_NAME") { // This must be the name of the role otherwise ansible won't find the role
     try {
@@ -40,9 +31,6 @@ node {
           // env.AZURE_TAGS = "product:mgmt"
           // ,role:ldap"
           sh '''
-          # pwd
-          # find
-          # env
 
           if [ "$test_mode" == "true" ]; then
             echo "In test mode!"
@@ -55,7 +43,6 @@ node {
           chmod +x inventory/azure_rm.py
 
           if [ "$windows" != "true" ]; then
-            echo "DEBUG CASE 1"
             cat << EOF > ansible.cfg
 [defaults]
 remote_port = \$SSH_PORT
@@ -65,16 +52,11 @@ roles_path = roles
 EOF
 
           else
-            echo "DEBUG CASE 2"
             cat << EOF > ansible.cfg
 [privilege_escalation]
 become = False
 EOF
           fi
-
-         # ls -lh ansible.cfg
-         # cat ansible.cfg
-         # ansible-config view
 
           # File is searched in wrong location because task is directly included from pre_tasks
           mkdir -p roles/bootstrap-role/tasks/templates/
@@ -85,9 +67,9 @@ EOF
             if [ "$HOSTNAME_PARAM" == "" ]; then
 
               ansible-config view   
-              ansible-playbook -vvv -i  inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml 
+              ansible-playbook -i  inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml 
             else
-              ansible-playbook -vvv -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
+              ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
             fi
 
         '''
