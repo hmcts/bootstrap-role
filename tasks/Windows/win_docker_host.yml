@@ -44,3 +44,25 @@
     Restart-Computer -Force
     }
     else {Write-Output "Docker engine installed " -Verbose}
+
+
+- name: Install docker engine
+  win_shell: |  
+    New-Item -Type File -Name daemon.json -Path C:\ProgramData\docker\ -Force
+
+    $exampleFile = @"
+    {
+        "hosts":  [
+                      "tcp://0.0.0.0:2375",
+                      "npipe://"
+                  ],
+        "storage-opts": [
+                      "size=120GB"
+                    ]
+    }
+
+    "@
+
+    $exampleFile | Out-File .\daemon.json
+
+    Restart-Service docker
