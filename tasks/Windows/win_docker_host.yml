@@ -48,7 +48,7 @@
 
 - name: Install docker engine
   win_shell: |  
-    New-Item -Type File -Name daemon.json -Path C:\ProgramData\docker\ -Force
+    New-Item -Type File -Name daemon.json -Path C:\ProgramData\docker\config -Force
 
     $exampleFile = @"
     {
