@@ -48,21 +48,20 @@
 
 - name: Configure docker engine
   win_shell: |  
-    New-Item -Type File -Name daemon.json -Path C:\ProgramData\docker\config -Force
+    Set-Location C:\ProgramData\docker\config
+    New-Item -Type File -Name daemon.json -Path -Force
 
-    $exampleFile = @"
-    {
-        "hosts":  [
-                      "tcp://0.0.0.0:2375",
-                      "npipe://"
-                  ],
-        "storage-opts": [
-                      "size=120GB"
-                    ]
+    $body = @{
+        hosts = @(
+            'tcp://0.0.0.0:2375', 'npipe://'
+        )
+        'storage-opts' = @(
+            'size=120GB'
+        )
     }
 
-    "@
-    Set-Location C:\ProgramData\docker\config
-    $exampleFile | Out-File .\daemon.json
+
+
+    $body |ConvertTo-Json| Out-File .\daemon.json
 
     Get-service docker | Restart-Service -verbose
