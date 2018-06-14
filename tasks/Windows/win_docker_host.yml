@@ -62,7 +62,7 @@
     }
 
     "@
-
+    Set-Location C:\ProgramData\docker\config
     $exampleFile | Out-File .\daemon.json
 
-    Restart-Service docker
+    Get-service docker | Restart-Service -verbose
