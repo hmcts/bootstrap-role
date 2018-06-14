@@ -49,7 +49,7 @@
 - name: Configure docker engine
   win_shell: |  
     Set-Location C:\ProgramData\docker\config
-    New-Item -Type File -Name daemon.json -path C:\ProgramData\docker\config -Force
+    New-Item -Type File -Name daemon.json -Force
 
     $body = @{
         hosts = @(
