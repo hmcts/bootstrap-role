@@ -60,12 +60,12 @@ EOF
 
           # File is searched in wrong location because task is directly included from pre_tasks
           mkdir -p roles/bootstrap-role/tasks/RedHat/templates/
-          cp -a ./roles/bootstrap-role/templates/resolv.conf.j2 ./roles/bootstrap-role/tasks/RedHat/templates/resolv.conf.j2
+          cp -a ./roles/bootstrap-role/templates/* ./roles/bootstrap-role/tasks/RedHat/templates/
 
             # Execute ansible-playbook
             ln -s roles/bootstrap-role/run_bootstrap.yml run_bootstrap.yml
             if [ "$HOSTNAME_PARAM" == "" ]; then
-              ansible-playbook -i inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml 
+              ansible-playbook -i inventory/azure_rm.py --tags "$ANSIBLE_TAGS" run_bootstrap.yml
             else
               ansible-playbook -i "$HOSTNAME_PARAM," --tags "$ANSIBLE_TAGS" run_bootstrap.yml
             fi
