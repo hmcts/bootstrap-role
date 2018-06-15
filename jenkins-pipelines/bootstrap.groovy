@@ -41,6 +41,7 @@ node {
           ansible-galaxy install -r roles/bootstrap-role/requirements.yml --force --roles-path=roles/
 
           chmod +x inventory/azure_rm.py
+          pwd
 
           if [ "$windows" != "true" ]; then
             cat << EOF > ansible.cfg
