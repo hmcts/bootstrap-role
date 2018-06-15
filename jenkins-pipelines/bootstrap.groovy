@@ -17,7 +17,7 @@ node {
           git url: "https://github.com/hmcts/ansible-management.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
 
           dir('roles/bootstrap-role') {
-            git url: "https://github.com/hmcts/bootstrap-role.git", branch: "jb-fix-groovy-code"
+            git url: "https://github.com/hmcts/bootstrap-role.git", branch: "master"
           }
 
           dir('roles/cis') {
@@ -41,8 +41,6 @@ node {
           ansible-galaxy install -r roles/bootstrap-role/requirements.yml --force --roles-path=roles/
 
           chmod +x inventory/azure_rm.py
-          pwd
-          find .
 
           if [ "$windows" != "true" ]; then
             cat << EOF > ansible.cfg
