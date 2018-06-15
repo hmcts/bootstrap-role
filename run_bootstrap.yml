@@ -3,9 +3,9 @@
   pre_tasks:
     - name: Show OS
       debug:
-        var: ansible_os_name
+        var: ansible_os_family
     - name: Setup DNS early in the process
-      include_tasks: "roles/bootstrap-role/tasks/resolver.yml"
+      include_tasks: "roles/bootstrap-role/tasks/RedHat/resolver.yml"
       when: ansible_os_family == 'RedHat'
   environment:
     http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
