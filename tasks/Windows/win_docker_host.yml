@@ -1,0 +1,65 @@
+---
+- name: Install Windows Server 2016 Containers feature
+  win_feature:
+    name: Containers
+    include_sub_features: yes
+    state: present
+
+- name: Removed unused Windows features
+  win_feature:
+    name: 
+    - FS-SMB1
+    state: absent
+
+- name: Set proxy machine level. Required by Docker host
+  win_environment:
+    state: present
+    name: HTTP_PROXY
+    value: http://reformMgmtProxyOut.reform.hmcts.net:8080
+    level: machine
+
+- name: Set proxy machine level. Required by Docker host
+  win_environment:
+    state: present
+    name: HTTPS_PROXY
+    value: http://reformMgmtProxyOut.reform.hmcts.net:8080
+    level: machine
+
+- name: Install docker engine
+  win_shell: |   
+   If (!((Get-Service Docker -ErrorAction SilentlyContinue).Status -eq "running")) {
+    
+    $proxyString = "http://reformMgmtProxyOut.reform.hmcts.net:8080"
+    $proxyUri = new-object System.Uri($proxyString)
+    [System.Net.WebRequest]::DefaultWebProxy =
+    new-object System.Net.WebProxy ($proxyUri, $true)
+
+    netsh winhttp set proxy proxy-server="http=http://reformMgmtProxyOut.reform.hmcts.net:8080;https=http://reformMgmtProxyOut.reform.hmcts.net:8080"
+    
+    Write-Output "Installing Docker engine"
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Verbose -Proxy http://reformMgmtProxyOut.reform.hmcts.net:8080
+    Install-Module -Name DockerMsftProvider -Repository PSGallery -Force -Verbose
+    Install-Package Docker -ProviderName DockerMsftProvider -Force -verbose
+    Write-Verbose "Restarting machine" -Verbose
+    Restart-Computer -Force
+    }
+    else {Write-Output "Docker engine installed " -Verbose}
+
+
+- name: Configure docker engine
+  win_shell: |  
+    Set-Location C:\ProgramData\docker\config
+    New-Item -Type File -Name daemon.json -Force
+
+    $body = @{
+        hosts = @(
+            'tcp://0.0.0.0:2375', 'npipe://'
+        )
+        'storage-opts' = @(
+            'size=120GB'
+        )
+    }
+
+    $body |ConvertTo-Json| Out-File .\daemon.json -Encoding ascii
+
+    Get-service docker | Restart-Service -verbose
