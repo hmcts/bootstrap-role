@@ -61,8 +61,8 @@ EOF
           fi
 
           # File is searched in wrong location because task is directly included from pre_tasks
-          mkdir -p roles/bootstrap-role/tasks/templates/
-          cp -a ./roles/bootstrap-role/templates/resolv.conf.j2 ./roles/bootstrap-role/tasks/templates/resolv.conf.j2
+          mkdir -p roles/bootstrap-role/tasks/RedHat/templates/
+          cp -a ./roles/bootstrap-role/templates/resolv.conf.j2 ./roles/bootstrap-role/tasks/RedHat/templates/resolv.conf.j2
 
             # Execute ansible-playbook
             ln -s roles/bootstrap-role/run_bootstrap.yml run_bootstrap.yml
