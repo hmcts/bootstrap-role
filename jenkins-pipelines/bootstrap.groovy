@@ -42,6 +42,7 @@ node {
 
           chmod +x inventory/azure_rm.py
           pwd
+          find .
 
           if [ "$windows" != "true" ]; then
             cat << EOF > ansible.cfg
