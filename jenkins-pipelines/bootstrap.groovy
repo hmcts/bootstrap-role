@@ -20,6 +20,10 @@ node {
             git url: "https://github.com/hmcts/bootstrap-role.git", branch: "master"
           }
 
+          dir('roles/prebootstrap-role') {
+            git url: "https://github.com/hmcts/prebootstrap-role.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
+          }
+
           dir('roles/cis') {
             git url: "https://github.com/hmcts/cis-role.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
           }
@@ -57,10 +61,6 @@ EOF
 become = False
 EOF
           fi
-
-          # File is searched in wrong location because task is directly included from pre_tasks
-          mkdir -p roles/bootstrap-role/tasks/RedHat/templates/
-          cp -a ./roles/bootstrap-role/templates/* ./roles/bootstrap-role/tasks/RedHat/templates/
 
             # Execute ansible-playbook
             ln -s roles/bootstrap-role/run_bootstrap.yml run_bootstrap.yml
