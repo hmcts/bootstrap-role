@@ -5,7 +5,7 @@
       debug:
         var: ansible_os_family
     - name: Setup DNS early in the process
-      include_tasks: "bootstrap-role/tasks/RedHat/resolver.yml"
+      include_tasks: "tasks/RedHat/resolver.yml"
       when: ansible_os_family == 'RedHat'
   environment:
     http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
