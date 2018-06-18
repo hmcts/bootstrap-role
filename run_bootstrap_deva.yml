@@ -1,7 +1,5 @@
 ---
 - hosts: product_evidence
-  pre_tasks:
-    - include: "roles/bootstrap-role/tasks/resolver.yml"
   environment:
     http_proxy: "http://reformmgmtproxyout.reform.hmcts.net:8080/"
   become: true

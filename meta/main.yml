@@ -10,6 +10,7 @@ galaxy_info:
   galaxy_tags: []
 
 dependencies:
+  - { role: prebootstrap-role, when: ansible_os_family == 'RedHat' }
   - { role: devops.repos, when: ansible_os_family == 'RedHat' }
   - { role: devops.filebeat, when: ansible_os_family == 'RedHat' }
   - { role: clamav-role, when: ansible_os_family == 'RedHat' }
