@@ -23,8 +23,6 @@ It configures:
  - ntp
  - mail
  - selinux
- - outboundproxy
- - resolv.conf
  - openldapclient
 
 also creates a swap partition and formats the third disk `/dev/sdc` when/if it exists
