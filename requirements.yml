@@ -1,5 +1,10 @@
 ---
 
+- name: prebootstrap-role
+  src: https://github.com/hmcts/prebootstrap-role.git
+  scm: git
+  version: master
+
 - name: devops.filebeat
   src: https://github.com/hmcts/filebeat-role.git
   scm: git
@@ -9,11 +14,6 @@
   src: https://github.com/hmcts/clamav-role
   scm: git
   version: master
-
-  #- name: cis
-  #  src: https://github.com/hmcts/cis-role.git
-  #  scm: git
-  #  version: master
 
 - name: zabbixagent-role
   src: https://github.com/hmcts/zabbixagent-role
