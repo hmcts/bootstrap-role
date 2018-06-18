@@ -20,10 +20,6 @@ node {
             git url: "https://github.com/hmcts/bootstrap-role.git", branch: "master"
           }
 
-          dir('roles/prebootstrap-role') {
-            git url: "https://github.com/hmcts/prebootstrap-role.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
-          }
-
           dir('roles/cis') {
             git url: "https://github.com/hmcts/cis-role.git", branch: "master", credentialsId: "jenkins-public-github-api-token"
           }
