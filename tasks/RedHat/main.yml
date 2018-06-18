@@ -1,5 +1,4 @@
 ---
-- include: outboundproxy.yml
 - include: waagent_swap.yml
 - include: diskutil_format.yml
 - include: mail.yml
