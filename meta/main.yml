@@ -10,9 +10,9 @@ galaxy_info:
   galaxy_tags: []
 
 dependencies:
-  - { role: prebootstrap-role, when: ansible_os_family == 'RedHat' }
-  - { role: devops.repos, when: ansible_os_family == 'RedHat' }
-  - { role: devops.filebeat, when: ansible_os_family == 'RedHat' }
-  - { role: clamav-role, when: ansible_os_family == 'RedHat' }
-  - { role: zabbixagent-role, when: ansible_os_family == 'RedHat' }
-  - { role: cis, when: ansible_os_family == 'RedHat' }
+  - { role: prebootstrap-role, when: ansible_os_family != 'Windows' }
+  - { role: devops.repos, when: ansible_os_family != 'Windows' }
+  - { role: devops.filebeat, when: ansible_os_family != 'Windows' }
+  - { role: clamav-role, when: ansible_os_family != 'Windows' }
+  - { role: zabbixagent-role, when: ansible_os_family != 'Windows' }
+  - { role: cis, when: ansible_os_family != 'Windows' }
