@@ -10,7 +10,7 @@
   scm: git
   version: master
 
-- name: cis
+- name: cis-role
   src: https://github.com/hmcts/cis-role.git
   scm: git
   version: master
