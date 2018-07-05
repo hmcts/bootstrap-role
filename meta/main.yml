@@ -11,7 +11,7 @@ galaxy_info:
 
 dependencies:
   - { role: prebootstrap-role, when: ansible_os_family != 'Windows' }
-  - { role: devops.repos, when: ansible_os_family != 'Windows' }
+  - { role: repos-role, when: ansible_os_family != 'Windows' }
   - { role: devops.filebeat, when: ansible_os_family != 'Windows' }
   - { role: clamav-role, when: ansible_os_family != 'Windows' }
   - { role: zabbixagent-role, when: ansible_os_family != 'Windows' }
