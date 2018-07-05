@@ -15,4 +15,4 @@ dependencies:
   - { role: devops.filebeat, when: ansible_os_family != 'Windows' }
   - { role: clamav-role, when: ansible_os_family != 'Windows' }
   - { role: zabbixagent-role, when: ansible_os_family != 'Windows' }
-  - { role: cis, when: ansible_os_family != 'Windows' }
+  - { role: cis-role, when: ansible_os_family != 'Windows' }
