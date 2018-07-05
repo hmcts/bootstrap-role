@@ -13,4 +13,4 @@
     - { role: clamav-role, mode: internal }
 #    - { role: cis, mode: internal }
     - { role: zabbixagent-role, mode: internal }
-    - { role: devops.repos, mode: internal }
+    - { role: repos-role, mode: internal }

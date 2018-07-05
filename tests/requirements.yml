@@ -20,7 +20,7 @@
   scm: git
   version: master
 
-- name: devops.repos
+- name: repos-role
   src: https://github.com/hmcts/repos-role.git
   scm: git
   version: master
